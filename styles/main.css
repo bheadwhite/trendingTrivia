@@ -2,6 +2,7 @@
 *, h1, a, body {
   font-family: 'Montserrat', sans-serif;
   box-sizing: border-box;
+  text-decoration: none;
 }
 body {
   position: relative;
@@ -143,7 +144,22 @@ ul li label:hover, input:hover + label {
 label, input[type="radio"], input[type="range"] {
   cursor: pointer;
 }
+.question {
+  cursor: pointer
+}
+.nextPageBtns {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  text-decoration: underline;
+  color: rgb(66, 196, 239);
+  font-size: 20px;
+  cursor: pointer;
+}
+.nextPageBtns {
 
+}
+/* *********************************** MODAL ****************************************** */
 .modal {
   position: fixed;
   top: 0;
@@ -152,7 +168,6 @@ label, input[type="radio"], input[type="range"] {
   width: 100vw;
   background: rgba(88, 88, 88, 0.55);
   display: flex;
-  display: none; /* ALERTDELETEME - REMOVE THIS line only WHEN STYLING THE MODAL*/
   justify-content: center;
   align-items: center;
 }
@@ -227,4 +242,7 @@ input[type="range"] {
 }
 .red {
   background: rgb(218, 45, 123);
+}
+.selected {
+  background: lightgrey;
 }

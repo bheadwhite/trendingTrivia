@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="triviaTrends">
 
 <head>
   <meta charset="utf-8">
@@ -9,68 +9,72 @@
   <link rel="shortcut icon" href="/styles/assets/crownFavicon.png">
 </head>
 
-<body>
+<body ng-controller="mainCtrl">
   <header>
     <div></div>
     <h1>Trivia Trends</h1>
-    <button><span>+</span> Add Question</button>
+    <button ng-click="toggleModal(null, null, 'newQuestion')"><span>+</span> Add Question</button>
   </header>
   <article>
     <nav>
-      <a>All Questions</a>
-      <a>Easy</a>
-      <a>Medium</a>
-      <a>Hard</a>
-      <a>Search by Animal</a>
+      <a ng-click="getQuestions()" ui-sref="questions">All Questions</a>
+      <a ng-click="getByDifficulty(1)">Easy</a>
+      <a ng-click="getByDifficulty(2)">Medium</a>
+      <a ng-click="getByDifficulty(3)">Hard</a>
+      <a ng-click="toggleSearch()">Search by Animal</a>
     </nav>
-    <div class="search">
-      <input type="text" placeholder="Animal to search by">
+    <div class="search" ng-if="searchOpen === true">
+      <input type="text" placeholder="Animal to search by" ng-model='search.animal'>
     </div>
 
     <!-- Questions go here -->
-
+    <div ui-view></div>
+    <div class="nextPageBtns">
+      <a><h3 ng-hide="page == 0" ng-click="changePage(page, -1)">< Prev Page</h3></a>
+      <h3 ng-hide="questions.length < 10" ng-click="changePage(page, 1)">Next Page ></h3>
+    </div>
   </article>
 
-  <div class="modal">
+  <div class="modal" ng-if="modal">
     <form>
-      <h4 class="close">X</h4>
-      <span>Question</span><input type="text" ng-model="<!-- Question -->">
-      <span>Animal it's about</span><input type="text" ng-model="<!-- Animal -->">
+      <h4 class="close" ng-click="toggleModal('close')">X</h4>
+      <span>Question</span><input type="text" ng-model="modalQuestion.question">
+      <span>Animal it's about</span><input type="text" ng-model="modalQuestion.animal">
       <span>Difficulty</span>
       <div class="range">
-        <input type="range" min="1" max="3" ng-model="<!-- Difficulty -->">
+        <input type="range" min="1" max="3" ng-model="modalQuestion.difficulty">
 
         <h5>{{newQuestion.difficulty}}</h5>
       </div>
       <h4>Options</h4>
       <div>
-        <input type="radio" ng-model="" value="1">
-        <input type="text" ng-model="">
+        <input type="radio" ng-model="modalQuestion.correct_answer" value="1" name='modalQuestion.question'>
+        <input type="text" ng-model="modalQuestion.options['1']">
       </div>
       <div>
-        <input type="radio" ng-model="" value="2">
-        <input type="text" ng-model="">
+        <input type="radio" ng-model="modalQuestion.correct_answer" value="2" name='modalQuestion.question'>
+        <input type="text" ng-model="modalQuestion.options['2']">
       </div>
       <div>
-        <input type="radio" ng-model="" value="3">
-        <input type="text" ng-model="">
+        <input type="radio" ng-model="modalQuestion.correct_answer" value="3" name='modalQuestion.question'>
+        <input type="text" ng-model="modalQuestion.options['3']">
       </div>
       <div>
-        <input type="radio" ng-model="" value="4">
-        <input type="text" ng-model="">
+        <input type="radio" ng-model="modalQuestion.correct_answer" value="4" name='modalQuestion.question'>
+        <input type="text" ng-model="modalQuestion.options['4']">
       </div>
 
       <!--Add question buttons-->
-      <div class="buttons">
-        <button class="green">Save Question</button>
-        <button>Cancel</button>
+      <div class="buttons" ng-if="modalNewQuestion">
+        <button ng-click="postQuestion(modalQuestion)" class="green">Save Question</button>
+        <button ng-click="toggleModal('close')">Cancel</button>
       </div>
 
       <!--Edit & Delete question buttons-->
-      <div class="buttons">
-        <button class="red">Delete Question</button>
-        <button class="green">Save Changes</button>
-        <button>Cancel</button>
+      <div class="buttons" ng-if="modalEdit">
+        <button ng-click='deleteQuestion(modalQuestion._id)' class="red">Delete Question</button>
+        <button ng-click="updateQuestion(modalQuestion)" class="green">Save Changes</button>
+        <button ng-click="toggleModal('close')">Cancel</button>
       </div>
 
     </form>
@@ -81,7 +85,10 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.js"></script>
   <script src="./app.js" charset="utf-8"></script>
+  <script src="./mainCtrl.js"></script>
+  <script src="./questionsSrvc.js"></script>
 </body>
 
 </html>

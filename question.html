@@ -1,16 +1,16 @@
-<div class="question-wrapper">
+<div class="question-wrapper" ng-repeat="(key, question) in questions | filter: search" ng-class="{red: question.chosenAnswer && question.chosenAnswer != question.correct_answer, green: question.chosenAnswer && question.chosenAnswer == question.correct_answer}" >
 
-<h3><!-- Question --></h3>
-<div ><!-- Difficulty --></div>
-<div class="gear" >
-  <img src="/styles/assets/gear.svg" alt="">
-</div>
-<ul>
-  <li > <!-- Repeated for each option -->
-    <input type="radio">
-      <label><!-- Option text --></label>
-  </li>
-</ul>
+  <h3>{{question.question}}</h3>
+  <div ng-class="{green: question.difficultyLevel == 'Easy', yellow: question.difficultyLevel == 'Medium', red: question.difficultyLevel == 'Hard'}">{{question.difficultyLevel}}</div>
+  <div class="gear">
+    <img src="/styles/assets/gear.svg" alt="gear" ng-click="toggleModal('open', key, 'edit')">
+  </div>
+  <ul>
+    <li class='question' ng-repeat="(key1, option) in question.options" ng-click="questionCheck(key, key1)" >
+      <label for='{{option}}' >{{option}}</label>
+      <input type='radio' id="{{option}}" name="{{key}}" />
+    </li>
+  </ul>
 
 </div>
 
